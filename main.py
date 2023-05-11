@@ -50,10 +50,10 @@ while running:
                         btn = 2
                     elif  btn == 2:
                         btn = 1
-                elif event.key == pygame.K_DOWN:
+                elif event.key == pygame.K_DOWN or event.key == pygame.K_s:
                     prevBtn = btn
                     btn = 3
-                elif event.key == pygame.K_UP and prevBtn != 0:
+                elif (event.key == pygame.K_UP or event.key == pygame.K_w) and prevBtn != 0:
                     if prevBtn == 1:
                         btn = 1
                     else:
@@ -70,15 +70,25 @@ while running:
                         btn = 1
             elif displayScreen == "character":
                 if event.key == pygame.K_LEFT or event.key == pygame.K_a:
-                    if num > 1:
-                        num -= 1
+                    if btn > 1:
+                        btn -= 1
                     else:
-                        num = 3
-                if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
-                    if num < 3:
-                        num += 1
+                        btn = 3
+                elif event.key == pygame.K_RIGHT or event.key == pygame.K_d:
+                    if btn < 3:
+                        btn += 1
                     else:
-                        num = 1
+                        btn = 1
+                elif event.key == pygame.K_DOWN or event.key == pygame.K_s:
+                    prevBtn = btn
+                    btn = 4
+                elif (event.key == pygame.K_UP or event.key == pygame.K_w) and prevBtn != 0:
+                    if prevBtn == 1:
+                        btn = 1
+                    elif prevBtn == 2:
+                        btn = 2
+                    else:
+                        btn = 3
                 elif event.key == pygame.K_RETURN:
                     if btn == 1 or btn == 2 or btn == 3:
                         character = gender + "/" + gender + "_" + str(num)
@@ -99,6 +109,15 @@ while running:
                 elif event.key == pygame.K_e:
                     dead = True
                     displayScreen = "dead"
+            elif displayScreen == "dead":
+                if event.key == pygame.K_RETURN:
+                    if btn == 1:
+                        mapa = 1
+                        wave = 1
+                        enemies =5
+                        displayScreen = "game"
+                    elif  btn == 2:
+                        displayScreen = "main"
     if not playing:
         if time_1 == 0:
             time_1 = time.time()
@@ -115,7 +134,7 @@ while running:
         elif displayScreen == "gender":
             screens.genderChooseScreen(screen, font, btn)
         elif displayScreen == "character":
-            screens.characterChooseScreen(screen, font, gender)
+            screens.characterChooseScreen(screen, font, btn, gender)
         elif displayScreen == "game":
             screens.gameScreen(screen, font, backgrounds, mapa, wave, enemies, character)
         elif displayScreen == "dead":
